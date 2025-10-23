@@ -100,7 +100,8 @@
   <h1>🐍 K S - W U N S Z ®</h1>
   <div id="leaderboard">
 
-    <h2>🏆 K S - B I T O N Y  T O P  1 2</h2>
+    <h2>🏆 K S - B I T O N Y <br>      T O P  1 2</h2>
+	  
 	<ol id="boardList"></ol>
   </div>
   <script>
@@ -189,7 +190,7 @@
         isGameOver = true;
         clearInterval(gameLoop);
         setTimeout(() => {
-          alert("💀💀💀   W u n s z  p a d ł ! 💀💀💀   K S - B I T O N Y: " + score);
+          alert("💀💀💀   W u n s z  p a d ł ! 💀💀💀     K S - B I T O N Y: " + score);
           maybeAddToLeaderboard(score);
         }, 100);
         return;
@@ -220,7 +221,7 @@
     function maybeAddToLeaderboard(newScore) {
       const lowest = leaderboard[leaderboard.length - 1].score;
       if (newScore > lowest) {
-        let nick = prompt("🎉 W O W ! Nowy wynik w TOP 12! Podaj swój nick (4–6 znaków):", "GRACZ");
+        let nick = prompt("🎉 W O W ! Wynik w TOP 12! Podaj swój nick (4–6 znaków):", "GRACZ");
 
         if (nick && nick.length >= 4 && nick.length <= 6) {
           leaderboard.push({ nick: nick.toUpperCase(), score: newScore });
@@ -258,7 +259,7 @@
       setTimeout(() => {
         intro.style.display = "none";
         initGame();
-      }, 1000);
+      }, 2000);
     }
 
     intro.addEventListener("click", startAfterIntro);
