@@ -104,6 +104,13 @@
 	<ol id="boardList"></ol>
   </div>
   <script>
+
+		    const canvas = document.getElementById("game");
+    		const ctx = canvas.getContext("2d");
+    		const scoreDisplay = document.getElementById("score");
+    		const boardList = document.getElementById("boardList");
+    		const intro = document.getElementById("intro");
+	  
     const gridSize = 20;
     let snake, direction, apple, score, speed, gameLoop, isGameOver;
 
