@@ -206,7 +206,7 @@
           x: Math.floor(Math.random() * canvas.width / gridSize),
           y: Math.floor(Math.random() * canvas.height / gridSize)
         };
-        speed = Math.max(30, speed - 5);
+        speed = Math.max(30, speed - 15);
         clearInterval(gameLoop);
         gameLoop = setInterval(() => {
           update();
