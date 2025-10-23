@@ -88,19 +88,19 @@
 </head>
 <body>
   <div id="intro">
-    <h1>🐍 K S - W U N S Z</h1>
+    <h1>🐍 K S - W U N S Z 🐍</h1>
     <p>Kliknij lub naciśnij dowolny klawisz, by zacząć...</p>
   </div>
 
   
-  <div id="score">K S - B I T O N Y: 0</div>
+  <div id="score">💰 K S - B I T O N Y : 0</div>
   <canvas id="game" width="400" height="400"></canvas>
   <button onclick="restartGame()">🔁 R E S T A R T</button>
   
   <h1>🐍 K S - W U N S Z ®</h1>
   <div id="leaderboard">
 
-    <h2>🏆 K S - B I T O N Y <br>      T O P  1 2</h2>
+    <h2>💰 K S - B I T O N Y <br>     🏆  T O P  1 2</h2>
 	  
 	<ol id="boardList"></ol>
   </div>
@@ -160,7 +160,7 @@
       score = 0;
       speed = 400;
       isGameOver = false;
-      scoreDisplay.textContent = "K S - B I T O N Y: 0";
+      scoreDisplay.textContent = "💰 K S - B I T O N Y : 0";
       renderLeaderboard();
       clearInterval(gameLoop);
       gameLoop = setInterval(() => {
@@ -190,7 +190,7 @@
         isGameOver = true;
         clearInterval(gameLoop);
         setTimeout(() => {
-          alert("💀💀💀   W u n s z  p a d ł ! 💀💀💀     K S - B I T O N Y: " + score);
+          alert("💀💀💀   W u n s z  p a d ł ! 💀💀💀   💰💰💰 K S - B I T O N Y : " + score);
           maybeAddToLeaderboard(score);
         }, 100);
         return;
@@ -201,7 +201,7 @@
       if (head.x === apple.x && head.y === apple.y) {
         score++;
 
-        scoreDisplay.textContent = "K S - B I T O N Y: " + score;
+        scoreDisplay.textContent = "💰 K S - B I T O N Y: " + score;
 
         apple = {
           x: Math.floor(Math.random() * canvas.width / gridSize),
