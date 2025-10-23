@@ -3,7 +3,7 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-   <title>®KS-WUNSZ®</title>
+   <title>® K S - W U N S Z ®</title>
   <style>
     body {
       margin: 0;
@@ -93,14 +93,14 @@
   </div>
 
   
-  <div id="score">KS-BITONY: 0</div>
+  <div id="score">K S - B I T O N Y: 0</div>
   <canvas id="game" width="400" height="400"></canvas>
   <button onclick="restartGame()">🔁 R E S T A R T</button>
   
-  <h1>🐍 KS-WUNSZ ®</h1>
+  <h1>🐍 K S - W U N S Z ®</h1>
   <div id="leaderboard">
 
-    <h2>🏆 KS-BITONY TOP 12</h2>
+    <h2>🏆 K S - B I T O N Y  T O P  1 2</h2>
 	<ol id="boardList"></ol>
   </div>
   <script>
@@ -220,7 +220,7 @@
     function maybeAddToLeaderboard(newScore) {
       const lowest = leaderboard[leaderboard.length - 1].score;
       if (newScore > lowest) {
-        let nick = prompt("🎉 WOW! Nowy wynik w TOP 12! Podaj swój nick (4–6 znaków):", "GRACZ");
+        let nick = prompt("🎉 W O W ! Nowy wynik w TOP 12! Podaj swój nick (4–6 znaków):", "GRACZ");
 
         if (nick && nick.length >= 4 && nick.length <= 6) {
           leaderboard.push({ nick: nick.toUpperCase(), score: newScore });
