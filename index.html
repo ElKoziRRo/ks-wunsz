@@ -1,1 +1,260 @@
 
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+   <title>®KS-WUNSZ®</title>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      color: #0f0;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      margin: 20px;
+      font-size: 2.5em;
+      text-shadow: 0 0 10px #0f0;
+    }
+    #score {
+      margin-bottom: 10px;
+      font-size: 1.2em;
+    }
+    canvas {
+      background: #222;
+      border: 2px solid #0f0;
+    }
+    button {
+      margin-top: 15px;
+      padding: 8px 16px;
+      font-size: 1em;
+      background: #0f0;
+      color: #000;
+      border: none;
+      cursor: pointer;
+    }
+    #leaderboard {
+      background: #000;
+      border: 2px solid #0f0;
+      padding: 10px;
+      margin-bottom: 10px;
+      max-width: 300px;
+      text-align: left;
+    }
+    #leaderboard h2 {
+      margin: 0 0 10px;
+      font-size: 1.2em;
+      text-align: center;
+    }
+    #leaderboard ol {
+      padding-left: 20px;
+      margin: 0;
+    }
+    #intro {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #000;
+      color: #0f0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      animation: fadeIn 1s ease-in-out;
+    }
+    #intro h1 {
+      font-size: 3em;
+      animation: pulse 1.5s infinite;
+      margin-bottom: 20px;
+    }
+    #intro p {
+      font-size: 1.2em;
+      opacity: 0.8;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.6; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes fadeOut {
+      to { opacity: 0; visibility: hidden; }
+    }
+  </style>
+</head>
+<body>
+  <div id="intro">
+    <h1>🐍 K S - W U N S Z</h1>
+    <p>Kliknij lub naciśnij dowolny klawisz, by zacząć...</p>
+  </div>
+
+  
+  <div id="score">KS-BITONY: 0</div>
+  <canvas id="game" width="400" height="400"></canvas>
+  <button onclick="restartGame()">🔁 R E S T A R T</button>
+  
+  <h1>🐍 KS-WUNSZ ®</h1>
+  <div id="leaderboard">
+
+    <h2>🏆 KS-BITONY TOP 12</h2>
+	<ol id="boardList"></ol>
+  </div>
+  <script>
+    const gridSize = 20;
+    let snake, direction, apple, score, speed, gameLoop, isGameOver;
+
+    let leaderboard = [];
+
+    function saveLeaderboard() {
+      localStorage.setItem("ksLeaderboard", JSON.stringify(leaderboard));
+    }
+
+    function loadLeaderboard() {
+      const saved = localStorage.getItem("ksLeaderboard");
+      if (saved) {
+        leaderboard = JSON.parse(saved);
+      } else {
+        leaderboard = [
+      { nick: "KKKK", score: 12 },
+      { nick: "KKKK", score: 11 },
+      { nick: "KKKK", score: 10 },
+      { nick: "KKKK", score: 9 },
+      { nick: "KKKK", score: 8 },
+      { nick: "KKKK", score: 7 },
+      { nick: "KKKK", score: 6 },
+      { nick: "XXXX", score: 5 },
+      { nick: "BBBB", score: 4 },
+      { nick: "CCCC", score: 3 },
+      { nick: "DDDD", score: 2 },
+      { nick: "ASAD", score: 1 }
+        ];
+      }
+    }
+
+    function renderLeaderboard() {
+      boardList.innerHTML = "";
+      leaderboard.forEach(entry => {
+        const li = document.createElement("li");
+        li.textContent = `${entry.nick} — ${entry.score} KS-BITONY`;
+        boardList.appendChild(li);
+      });
+    }
+
+    function initGame() {
+      loadLeaderboard();
+      snake = [{ x: 10, y: 10 }];
+      direction = { x: 1, y: 0 };
+      apple = { x: 15, y: 15 };
+      score = 0;
+      speed = 400;
+      isGameOver = false;
+      scoreDisplay.textContent = "K S - B I T O N Y: 0";
+      renderLeaderboard();
+      clearInterval(gameLoop);
+      gameLoop = setInterval(() => {
+        update();
+        draw();
+      }, speed);
+    }
+
+    function drawCell(x, y, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x * gridSize, y * gridSize, gridSize - 1, gridSize - 1);
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      snake.forEach((s, i) => drawCell(s.x, s.y, i === 0 ? "#0f0" : "#0a0"));
+      drawCell(apple.x, apple.y, "#f00");
+    }
+    function update() {
+      if (isGameOver) return;
+
+      const head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
+      const hitWall = head.x < 0 || head.y < 0 || head.x >= canvas.width / gridSize || head.y >= canvas.height / gridSize;
+      const hitSelf = snake.some(s => s.x === head.x && s.y === head.y);
+
+      if (hitWall || hitSelf) {
+        isGameOver = true;
+        clearInterval(gameLoop);
+        setTimeout(() => {
+          alert("💀💀💀   W u n s z  p a d ł ! 💀💀💀   K S - B I T O N Y: " + score);
+          maybeAddToLeaderboard(score);
+        }, 100);
+        return;
+      }
+
+      snake.unshift(head);
+
+      if (head.x === apple.x && head.y === apple.y) {
+        score++;
+
+        scoreDisplay.textContent = "K S - B I T O N Y: " + score;
+
+        apple = {
+          x: Math.floor(Math.random() * canvas.width / gridSize),
+          y: Math.floor(Math.random() * canvas.height / gridSize)
+        };
+        speed = Math.max(30, speed - 5);
+        clearInterval(gameLoop);
+        gameLoop = setInterval(() => {
+          update();
+          draw();
+        }, speed);
+      } else {
+        snake.pop();
+      }
+    }
+
+    function maybeAddToLeaderboard(newScore) {
+      const lowest = leaderboard[leaderboard.length - 1].score;
+      if (newScore > lowest) {
+        let nick = prompt("🎉 WOW! Nowy wynik w TOP 12! Podaj swój nick (4–6 znaków):", "GRACZ");
+
+        if (nick && nick.length >= 4 && nick.length <= 6) {
+          leaderboard.push({ nick: nick.toUpperCase(), score: newScore });
+          leaderboard.sort((a, b) => b.score - a.score);
+          leaderboard = leaderboard.slice(0, 12);
+          renderLeaderboard();
+          saveLeaderboard();
+        }
+      }
+    }
+
+    document.addEventListener("keydown", e => {
+      const dirs = {
+        ArrowUp: { x: 0, y: -1 },
+        ArrowDown: { x: 0, y: 1 },
+        ArrowLeft: { x: -1, y: 0 },
+        ArrowRight: { x: 1, y: 0 }
+      };
+      const newDir = dirs[e.key];
+      if (newDir && !(newDir.x === -direction.x && newDir.y === -direction.y)) {
+        direction = newDir;
+      }
+
+      if (intro.style.display !== "none") {
+        startAfterIntro();
+      }
+    });
+
+    function restartGame() {
+      initGame();
+    }
+
+    function startAfterIntro() {
+      intro.style.animation = "fadeOut 1s forwards";
+      setTimeout(() => {
+        intro.style.display = "none";
+        initGame();
+      }, 1000);
+    }
+
+    intro.addEventListener("click", startAfterIntro);
+  </script>
+</body>
+</html>
